@@ -15,6 +15,7 @@
  */
 
 #include QMK_KEYBOARD_H
+#include <stdint.h>
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -49,4 +50,14 @@ void keyboard_post_init_user(void) {
   rgblight_enable();
   rgblight_mode(1);
   rgblight_sethsv_noeeprom(0, 0, 255);
+}
+
+// Define the custom key binding
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == KC_ESC && (record->event.pressed && (get_mods() & (MOD_BIT(KC_LWIN) | MOD_BIT(KC_RWIN))))) {
+        // Press backtick key when Escape is pressed while holding Windows/Super key
+        tap_code(KC_GRAVE);
+        return false;
+    }
+    return true;
 }
